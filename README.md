@@ -2,50 +2,59 @@
 
 The tool reads a `source` file, parse it and prints PlantUML text to stdout.
 
->> NOTE: Currently, only the .sql extension is supported.
+Currently supports: 
+- `sql` - sql script
+- `py` - python code
 
 ## Usage
 ```bash
 python -m tools.plamtuml <path/to/file.sql> [--log-level NOTSET|INFO|DEBUG|WARNING|ERROR]
 ```
-**Example:**
+## Examples
+- outputs PlantUML code in `stdout`
+- using `--log-level` DEBUG message
+
 ```bash
 python plantuml.py tools/doc/test.sql --log-level DEBUG
 python plantuml.py tools/plantuml.py --log-level DEBUG
 ```
+**Stores `stdout` to `.puml` file and render svg with PlantUML**
 
-## Examples
-
-- display PlantUML in the terminal
 ```bash
-python -m tools.plamtuml schema.sql
-```
-- save to .puml and render with PlantUML
-```bash
+# redirect stdout to schema.puml
 python -m tools.plamtuml schema.sql > schema.puml
-plantuml schema.puml  # generates .png/.svg
+
+# generates .png/.svg
+plantuml schema.puml
 ```
 
-## Linux: install plantuml with conda
-- install or build your own VSCode plugin
-```bash
-code --install-extension plantuml-1.0.0.vsix
+## Prerequisites
+Install with **conda**
+- `plantuml`
+- `graphviz` 
+- `nodejs`
 
-# or localy if you have built your own version
-code --install-extension ~/plugin/vscode-plantuml/plantuml-1.0.0.vsix
-```
-
-- install plantuml graphviz and nodejs (if you'd like to control the plugin yourself.)
 ```bash
 conda install -c conda-forge openjdk=17 graphviz plantuml nodejs
 ```
 
-## Setting PlantUML in VSCode
+## Install plantuml `VSCode extension` with conda
+```bash
 code --install-extension plantuml-1.0.0.vsix
+
+# or localy if you built your own version
+code --install-extension ~/plugin/vscode-plantuml/plantuml-1.0.0.vsix
+```
+
+## Setting PlantUML in VSCode
+```bash
+code --install-extension plantuml-1.0.0.vsix
+
 #  ili 
 code --install-extension ~/projects/plugins/vscode-plantuml/plantuml-1.0.0.vsix
 ```
-- **Must add following to**: `.vscode/setting.json` in your project
+
+**Must add following to**: `.vscode/setting.json` in your project
 
 ```json
     "plantuml.exportFormat": "png",
