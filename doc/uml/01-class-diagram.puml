@@ -1,0 +1,36 @@
+@startuml
+
+title Tools | UML Strategy - Class Diagram
+scale 450 width
+caption "Figure 1 - Class Diagram"
+
+package "core.builder" {
+    interface "UMLBuilder" {
+        + init(caller,filename,encoding,list_of_macros): None
+        ---
+        + rendered: str
+        + build(): None
+    }
+}
+
+package "builders" {
+    class SQLBuilder implements "core.builder.UMLBuilder" {
+        + build(): None
+    }
+    class ClassBuilder implements "core.builder.UMLBuilder" {
+        + build(): None
+    }
+    class ActivityBuilder implements "core.builder.UMLBuilder" {
+        + build(): None
+    }
+}
+
+@enduml
+
+
+' https://dnsmon.ripe.net/docs/
+' https://dnsmon.ripe.net/probes/6849
+' https://dnsmon.ripe.net/?start=2025-08-22T16:04:00.000Z&end=2025-08-23T04:04:00.000Z&zone=root&protocol=tcp&ipVersion=both&viewpoint=unanswered-queries&autoRefresh=false&rt_color_range=60-722&rrt_color_range=125-200&uq_color_range=66-99&level=probes&server=198.41.0.4
+' https://ipinfo.io/data-research
+' https://ipinfo.io/e-books
+' https://ipinfo.io/ip-data

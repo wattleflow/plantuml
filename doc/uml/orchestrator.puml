@@ -1,0 +1,20 @@
+@startuml
+skinparam linetype ortho
+!pragma teoz true
+class Orchestrator {
+  # _listeners
+  # _processors
+  # _running
+  # _connection_manager
+  # _strategy_execute
+  # _start_processor(processor: IProcessor)
+  + add_processor(processor: IProcessor)
+  + emit_event(event: Event, **kwargs)
+  + register_listener(listener: IEventListener): None
+  + operation(action: Operation)
+  + start(parallel: bool)
+  + stop()
+}
+IEventSource <|-- Orchestrator
+IFacade <|-- Orchestrator
+@enduml

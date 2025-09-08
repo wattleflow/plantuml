@@ -1,0 +1,26 @@
+@startuml
+
+' https://plantuml.com/state-diagram
+
+title State Diagram - Tools | UML Generator
+caption "Figure 4 - State Diagram"
+scale 300 width
+
+state fork_state <<fork>>
+state join_state <<join>>
+
+[*] --> main : starts with arguments
+main --> Strategy : execute
+main: check filename
+main: execute strategy
+
+Strategy --> fork_state
+fork_state --> Builder : find builder
+fork_state --> Error : if not found error
+
+Error --> join_state : stop process
+Builder --> Content: build content
+Content --> join_state
+join_state --> [*] : Ends
+
+@enduml

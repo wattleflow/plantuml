@@ -1,0 +1,37 @@
+@startuml
+
+title Tools - UMLStrategy, SQLBuilder, ParseSqlTable
+
+caption "object diagram"
+
+package "main" {
+    object SQLBuilder {
+        - _caller: IWattleflow
+        - filename: str
+        - encoding: str
+        - list_of_macros: List
+        + uml: TextStream
+        --
+        + build(): None
+    }
+
+    object ParseSqlTable {
+        - _tables: Dict[str, Dict[str, str]]
+        + interpret(): bool
+    }
+
+    object UMLStrategy {
+        - content: str
+        - filaneme: str
+        - find_builder(self): UMLBuilder
+        --
+        + execute(self): None
+    }
+}
+
+UMLStrategy "1" o--> "1" UMLBuilder: creates
+UMLBuilder "1" o--> "1" SQLBuilder: returns
+UMLStrategy o--> "build" UMLBuilder
+UMLBuilder o--> "interpret" ParseSqlTable
+
+@enduml

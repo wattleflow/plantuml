@@ -1,0 +1,122 @@
+@startuml
+title WattleFlow Workflow – predložena struktura klasa (skica)
+
+package "wattleflow.workflow" {
+    class Workflow {
+        - id: str
+        - name: str
+        - pipelines: List<Pipeline>
+        + run(ctx: Context): Result
+        + addPipeline(p: Pipeline)
+    }
+
+    class Pipeline {
+        - id: str
+        - steps: List<Step>
+        + execute(ctx: Context): Result
+    }
+
+    abstract class Step {
+        - name: str
+        - inputs: List<Port>
+        - outputs: List<Port>
+        + execute(ctx: Context): Result
+    }
+
+    class TaskStep extends Step {
+        - task: Task
+        + execute(ctx: Context): Result
+    }
+
+    interface Task {
+        + configure(cfg: Config)
+        + run(data: Any, ctx: Context): Any
+    }
+
+    class Operator implements Task {
+        + configure(cfg: Config)
+        + run(data: Any, ctx: Context): Any
+    }
+
+    class Port {
+        - key: str
+        - type: str
+    }
+
+    class Edge {
+        - from: Port
+        - to: Port
+    }
+
+    class Runner {
+        + run(workflow: Workflow, ctx: Context): Result
+    }
+
+    class Scheduler {
+        + schedule(workflow: Workflow, cron: str)
+        + cancel(id: str)
+    }
+
+    class Context {
+        - config: Config
+        - logger: Logger
+        - metrics: Metrics
+        - storage: StorageAdapter
+        - eventBus: EventBus
+        + get(key: str): Any
+        + set(key: str, val: Any)
+    }
+
+    class Config
+    class Result { 
+        + ok: bool
+        + data: Any
+        + error: Exception 
+    }
+
+    class RetryPolicy {
+        - maxRetries: int
+    }
+    class Logger {
+        + info(msg)
+        + error(msg, ex) 
+    }
+    class Metrics {
+        + inc(name)
+        + observe(name, value) 
+    }
+    class EventBus {
+        + publish(topic, msg)
+        + subscribe(topic, handler) 
+    }
+    class StorageAdapter {
+        + read(uri)
+        + write(uri, data)
+    }
+    class Plugin {
+        + register(ctx: Context)
+    }
+    class Connector extends StorageAdapter
+}
+
+Workflow "1" *-- "many" Pipeline
+Pipeline "1" *-- "many" Step
+TaskStep o-- Task
+Step "many" o-- "many" Edge
+Edge "1" o-- "1" Port : from
+Edge "1" o-- "1" Port : to
+
+Runner --> Workflow
+Scheduler --> Workflow
+Workflow --> Context
+Context o-- Config
+Context o-- Logger
+Context o-- Metrics
+Context o-- StorageAdapter
+Context o-- EventBus
+Plugin ..> Context
+RetryPolicy ..> Task
+Operator -up-|> Task
+Connector -up-|> StorageAdapter
+
+@enduml

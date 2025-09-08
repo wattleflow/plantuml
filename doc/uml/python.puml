@@ -1,0 +1,15 @@
+@startuml
+skinparam linetype ortho
+!pragma teoz true
+class BuilderNotFound {
+}
+class UMLStrategy {
+  + content: str
+  + filename: pathlib.Path
+  # _find_builder(): UMLBuilder
+  + execute(**kwargs)
+}
+ValueError <|-- BuilderNotFound
+StrategyGenerate <|-- UMLStrategy
+ABC <|-- UMLStrategy
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+
+title tools | plantuml.py
+
+start
+
+if (filename supplied?) then (yes)
+    : execute strategy;
+else (no)
+    : raise FileNotFound;
+    stop
+endif
+
+if (find builder) then (yes)
+    : build;
+    : interpret content;
+    : render to stdout;
+else (no)
+    : raise BuilderNotFound;
+    stop
+endif
+
+stop
+
+caption "activity diagram"
+@enduml

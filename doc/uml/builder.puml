@@ -1,0 +1,15 @@
+@startuml
+skinparam linetype ortho
+!pragma teoz true
+
+frame builders {
+  class UMLBuilder {
+    + debug(msg: str, **kwargs): None
+    + rendered(): str
+    + build(): None
+  }
+}
+
+caption "inherits <<IBuilder, ABC>>"
+
+@enduml
